@@ -1,0 +1,22 @@
+{
+  "name": "js-slots-app",
+  "version": "1.0.0",
+  "description": "learning javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhi-dgd/js-slots-app.git"
+  },
+  "author": "Abhishek Degadwala",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhi-dgd/js-slots-app/issues"
+  },
+  "homepage": "https://github.com/abhi-dgd/js-slots-app#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
