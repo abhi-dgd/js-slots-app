@@ -135,14 +135,29 @@ const displaySlots = (transposedReels) => {
     console.log("-------------")
 };
 
+const checkWin = (generatedReels) => {
+    let rowsWon = ROWS;
+    for (let i=0; i<ROWS; i++){
+        let extracted_row = generatedReels[i];
+        for (let j=0; j < extracted_row.length; j++){
+            if (extracted_row[0] != extracted_row[j]){
+                rowsWon -= 1;
+                break;
+            }
+        };
+    };
+    return rowsWon;
+};
+
+
 // Execution
 let moneyAvailable = deposit();
 let linesBetOn = getBetLines();
 let amountBet = getBetAmount(moneyAvailable, linesBetOn);
 let generatedReels = spinWheel();
 let transposedReels = transposeArray(generatedReels);
-displaySlots(transposedReels)
-
+let _ = displaySlots(transposedReels);
+let won = checkWin(transposedReels);
 
 console.log()
 console.log("Money:", moneyAvailable)
@@ -151,4 +166,11 @@ console.log("Bet amount:", amountBet)
 console.log("Money available after placing bet: ",
     remainderBalance(moneyAvailable, amountBet, linesBetOn)
 )
-console.log("Completed!");
+if (won){
+    console.log()
+    console.log("----------------------------")
+    console.log("winner winner chicken dinner")
+    console.log("----------------------------")
+    console.log()
+}
+console.log("Game over!");
