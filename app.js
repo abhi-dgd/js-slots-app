@@ -135,8 +135,10 @@ const displaySlots = (transposedReels) => {
     console.log("-------------")
 };
 
-const checkWin = (generatedReels) => {
+const checkWin = (generatedReels, moneyDeposit, linesBetOn, amountBet) => {
     let rowsWon = ROWS;
+    let rowsWonIndices = [];
+    let balance = moneyDeposit;
     for (let i=0; i<ROWS; i++){
         let extracted_row = generatedReels[i];
         for (let j=0; j < extracted_row.length; j++){
@@ -146,31 +148,73 @@ const checkWin = (generatedReels) => {
             }
         };
     };
-    return rowsWon;
+
+    if (rowsWon < 1){
+        balance -= linesBetOn * amountBet;
+        return balance;
+    }
+    else{
+        balance += rowsWon * amountBet;
+        return balance;
+    }
 };
 
-
 // Execution
-let moneyAvailable = deposit();
-let linesBetOn = getBetLines();
-let amountBet = getBetAmount(moneyAvailable, linesBetOn);
-let generatedReels = spinWheel();
-let transposedReels = transposeArray(generatedReels);
-let _ = displaySlots(transposedReels);
-let won = checkWin(transposedReels);
+let newGame = true;
+let moneyAvailable = 0;
+while (true){
+    if (newGame){
+        moneyAvailable = deposit();
+    };
+    
+    let linesBetOn = getBetLines();
+    let amountBet = getBetAmount(moneyAvailable, linesBetOn);
+    let generatedReels = spinWheel();
+    let transposedReels = transposeArray(generatedReels);
+    let _ = displaySlots(transposedReels);
+    let balance = checkWin(transposedReels, moneyAvailable, linesBetOn, amountBet);
 
-console.log()
-console.log("Money:", moneyAvailable)
-console.log("Number of lines:", linesBetOn)
-console.log("Bet amount:", amountBet)
-console.log("Money available after placing bet: ",
-    remainderBalance(moneyAvailable, amountBet, linesBetOn)
-)
-if (won){
     console.log()
-    console.log("----------------------------")
-    console.log("winner winner chicken dinner")
-    console.log("----------------------------")
-    console.log()
-}
-console.log("Game over!");
+    console.log("Money:", moneyAvailable)
+    console.log("Number of lines:", linesBetOn)
+    console.log("Bet amount:", amountBet)
+    console.log("Money available after placing bet: ",
+        remainderBalance(moneyAvailable, amountBet, linesBetOn)
+    )
+    if (balance <= 0){
+        console.log("Game over!")
+        break;
+    } else if (balance < moneyAvailable){
+        moneyAvailable = balance;
+        console.log()
+        console.log("----------------------------")
+        console.log("   better luck next time!   ")
+        console.log("----------------------------")
+        console.log()
+        const again = prompt("Play again? [y/n] ")
+        console.log()
+        if (again == 'n'){
+            break;
+        } else if (again == 'y'){
+            newGame = false;
+            continue;
+        }
+    } else {
+        moneyAvailable = balance;
+        console.log()
+        console.log("----------------------------------")
+        console.log("   winner winner chicken dinner   ")
+        console.log("----------------------------------")
+        console.log()
+        console.log("New balance", balance)
+        console.log()
+        const again = prompt("Play again? [y/n] ")
+        console.log()
+        if (again == 'n'){
+            break;
+        } else if (again == 'y'){
+            newGame = false;
+            continue;
+        }
+    }
+};
