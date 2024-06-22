@@ -39,7 +39,7 @@ const deposit = () => {
 
 const getBetLines = () => {
     while (true){
-        const lines = prompt("Enter the number of lines you want to bet on: ");
+        const lines = prompt("Enter the number of lines you want to bet on [1, 2, 3]: ");
         integerLines = parseInt(lines)
         if (isNaN(integerLines) || integerLines <= 0 || integerLines > 3){
             console.log(
@@ -159,6 +159,17 @@ const checkWin = (generatedReels, moneyDeposit, linesBetOn, amountBet) => {
     }
 };
 
+const checkInterest = () => {
+    while (true){
+        let again = prompt("Play again? [y/n] ")
+        if (again == 'y' || again == 'n'){
+            return again;
+        }
+        console.log("Invalid entry. Option must be equal to `y` or `n`.");
+        continue;
+    }
+};
+
 // Execution
 let newGame = true;
 let moneyAvailable = 0;
@@ -191,13 +202,19 @@ while (true){
         console.log("   better luck next time!   ")
         console.log("----------------------------")
         console.log()
-        const again = prompt("Play again? [y/n] ")
+        again = checkInterest()
         console.log()
         if (again == 'n'){
+            console.log("----------------------------------")
+            console.log("        thanks for playing        ")
+            console.log("----------------------------------")
+            console.log()
             break;
         } else if (again == 'y'){
             newGame = false;
             continue;
+        } else {
+
         }
     } else {
         moneyAvailable = balance;
@@ -211,6 +228,10 @@ while (true){
         const again = prompt("Play again? [y/n] ")
         console.log()
         if (again == 'n'){
+            console.log("------------------------------")
+            console.log("     thanks for playing       ")
+            console.log("------------------------------")
+            console.log()
             break;
         } else if (again == 'y'){
             newGame = false;
